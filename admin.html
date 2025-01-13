@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Legal Library - Admin Dashboard</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --secondary: #64748b;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --sidebar-width: 250px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background: white;
+      border-right: 1px solid #e2e8f0;
+      padding: 1.5rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      color: var(--secondary);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background-color: #eff6ff;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      padding: 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      width: 300px;
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.875rem;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .stat-title {
+      color: var(--secondary);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-change {
+      font-size: 0.875rem;
+      color: var(--success);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .recent-uploads {
+      margin-top: 1rem;
+    }
+
+    .upload-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .upload-item:last-child {
+      border-bottom: none;
+    }
+
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+      background: #eff6ff;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+    }
+
+    .upload-details {
+      flex: 1;
+    }
+
+    .upload-title {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .upload-meta {
+      font-size: 0.875rem;
+      color: var(--secondary);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo-container">
+        <span class="logo">📚</span>
+        <span class="brand-name">The Legal Library</span>
+      </div>
+      
+      <nav class="nav-links">
+        <a href="#" class="nav-item active">📊 Dashboard</a>
+        <a href="#" class="nav-item">📚 Books</a>
+        <a href="#" class="nav-item">🏷️ Categories</a>
+        <a href="#" class="nav-item">👥 Users</a>
+        <a href="#" class="nav-item">💰 Sales</a>
+        <a href="#" class="nav-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" class="search-input" placeholder="Search for books, users...">
+        </div>
+        
+        <div class="user-menu">
+          <span>🔔</span>
+          <span>👤 Admin</span>
+        </div>
+      </header>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-title">Total Books</div>
+          <div class="stat-value">1,234</div>
+          <div class="stat-change">↑ 12% this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Active Users</div>
+          <div class="stat-value">5,678</div>
+          <div class="stat-change">↑ 8% this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total Sales</div>
+          <div class="stat-value">$12,345</div>
+          <div class="stat-change">↑ 15% this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">New Downloads</div>
+          <div class="stat-value">890</div>
+          <div class="stat-change">↑ 5% this month</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2>Add New Book</h2>
+          </div>
+          
+          <form>
+            <div class="form-group">
+              <label class="form-label">Book Title</label>
+              <input type="text" class="form-control" placeholder="Enter book title">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Author</label>
+              <input type="text" class="form-control" placeholder="Enter author name">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="form-control">
+                <option>Corporate Law</option>
+                <option>Criminal Law</option>
+                <option>Civil Law</option>
+                <option>International Law</option>
+                <option>Constitutional Law</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Price</label>
+              <input type="number" class="form-control" placeholder="Enter price">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" rows="4" placeholder="Enter book description"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Upload Book File</label>
+              <input type="file" class="form-control">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Add Book</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Recent Uploads</h2>
+          </div>
+          
+          <div class="recent-uploads">
+            <div class="upload-item">
+              <div class="upload-icon">📘</div>
+              <div class="upload-details">
+                <div class="upload-title">Corporate Law Basics</div>
+                <div class="upload-meta">Added 2 hours ago</div>
+              </div>
+            </div>
+            
+            <div class="upload-item">
+              <div class="upload-icon">📗</div>
+              <div class="upload-details">
+                <div class="upload-title">IP Law Guide 2025</div>
+                <div class="upload-meta">Added 5 hours ago</div>
+              </div>
+            </div>
+            
+            <div class="upload-item">
+              <div class="upload-icon">📕</div>
+              <div class="upload-details">
+                <div class="upload-title">Criminal Law Studies</div>
+                <div class="upload-meta">Added 1 day ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add click handlers for navigation
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          document.querySelector('.nav-item.active').classList.remove('active');
+          e.target.classList.add('active');
+        });
+      });
+
+      // Add form submission handler
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Book added successfully!');
+        form.reset();
+      });
+      //
+
+      // Check if user is an admin
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+          alert('Unauthorized access.');
+          window.location.href = '/signup.html';
+          return;
+      }
+      // fetch('/admin', { headers: { Authorization: `Bearer ${token}` } })
+      //     .then(res => {
+      //         if (res.status !== 200) {
+      //             alert('Admin access only.');
+      //           window.location.href = '';
+      //         }
+      //     });
+      fetch('http://localhost:5500/admin', { 
+          headers: { 
+              Authorization: `Bearer ${token}` 
+          }
+      })
+          .then(res => {
+              if (res.status !== 200) {
+                  alert('Admin access only.');
+                  window.location.href = '/';
+              }
+          })
+          .catch(err => {
+              console.error('Error fetching admin page:', err);
+              alert('An error occurred. Please try again later.');
+          })
+    });
+  </script>
+  <script>
+    const BACKEND_URL = 'https://e-book-server-95pk.onrender.com';
+  </script>  
+</body>
+</html>

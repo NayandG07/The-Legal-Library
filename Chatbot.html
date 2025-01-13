@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Legal Library Support</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2d3748;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle animated background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                #e6f0ff,
+                #fff5f5,
+                #f0ffff,
+                #fff0fa
+            );
+            animation: bgAnimation 15s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes bgAnimation {
+            0% {
+                transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            }
+            100% {
+                transform: translateX(-50%) translateY(-50%) rotate(360deg);
+            }
+        }
+
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #6b8cff, #7b5fff);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .chat-header h2 {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .chat-box {
+            height: 450px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #ffffff;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #d1d9e6;
+            border-radius: 3px;
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 16px;
+            max-width: 85%;
+            line-height: 1.5;
+            position: relative;
+            animation: messageSlide 0.3s ease-out forwards;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes messageSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-message {
+            background: #f8faff;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            border: 1px solid #e8eeff;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #6b8cff, #7b5fff);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .options-list {
+            margin-top: 15px;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-item {
+            padding: 12px 18px;
+            background: #ffffff;
+            border: 1px solid #e8eeff;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6b8cff;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-item::before {
+            content: '→';
+            opacity: 0;
+            transition: 0.3s;
+            transform: translateX(-10px);
+        }
+
+        .option-item:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .option-item:hover {
+            background: #f8faff;
+            transform: translateX(5px);
+            border-color: #6b8cff;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: #ffffff;
+            display: flex;
+            gap: 12px;
+            position: relative;
+            border-top: 1px solid #e8eeff;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e8eeff;
+            border-radius: 12px;
+            outline: none;
+            font-size: 0.95em;
+            background: #ffffff;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        #userInput::placeholder {
+            color: #a0aec0;
+        }
+
+        #userInput:focus {
+            border-color: #6b8cff;
+            box-shadow: 0 0 0 3px rgba(107, 140, 255, 0.1);
+        }
+
+        .send-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #6b8cff, #7b5fff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .send-btn:hover::before {
+            left: 100%;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 140, 255, 0.3);
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6b8cff20, #7b5fff20);
+            pointer-events: none;
+        }
+
+        .decoration:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation: float 8s infinite;
+        }
+
+        .decoration:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            right: 10%;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Legal Library Support</h2>
+        </div>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button class="send-btn" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const intents = {
+            greeting: {
+                patterns: ["hi", "hello", "hey", "start", "help"],
+                response: "Welcome to The Legal Library Support! How can I help you?",
+                options: [
+                    "1. Refund Policy",
+                    "2. FAQ",
+                    "3. Help & Support"
+                ]
+            },
+            refund: {
+                patterns: ["1", "refund", "refund policy", "return"],
+                response: "Our Refund Policy includes:\n\n• 14-day money-back guarantee\n• Full refund for technical issues\n• Partial refund for subscription cancellations",
+                options: ["Return to main menu"]
+            },
+            faq: {
+                patterns: ["2", "faq", "question", "help"],
+                response: "Frequently Asked Questions:\n\n• How to download books?\n• Subscription details\n• Account management\n• Technical requirements",
+                options: ["Return to main menu"]
+            },
+            support: {
+                patterns: ["3", "support", "help support", "contact"],
+                response: "Help & Support Options:\n\n• Email: support@legallibrary.com\n• Phone: 1-800-LEGAL-LIB\n• Live Chat: Available 24/7",
+                options: ["Return to main menu"]
+            }
+        };
+
+        function createMessage(text, isUser = false, options = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = text;
+
+            if (options) {
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+                options.forEach(option => {
+                    const li = document.createElement('li');
+                    li.className = 'option-item';
+                    li.textContent = option;
+                    li.onclick = () => handleOption(option);
+                    optionsList.appendChild(li);
+                });
+                messageDiv.appendChild(optionsList);
+            }
+
+            return messageDiv;
+        }
+
+        function handleOption(option) {
+            if (option === "Return to main menu") {
+                showMainMenu();
+                return;
+            }
+            document.getElementById('userInput').value = option;
+            sendMessage();
+        }
+
+        function showMainMenu() {
+            const chatBox = document.getElementById('chatBox');
+            const response = getResponse("hello");
+            chatBox.appendChild(createMessage(response.text, false, response.options));
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getResponse(userInput) {
+            userInput = userInput.toLowerCase();
+            
+            for (const [key, intent] of Object.entries(intents)) {
+                if (intent.patterns.some(pattern => userInput.includes(pattern))) {
+                    return {
+                        text: intent.response,
+                        options: intent.options
+                    };
+                }
+            }
+
+            return {
+                text: "I'm not sure about that. Please select from these options:",
+                options: intents.greeting.options
+            };
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            
+            if (userInput.value.trim() === '') return;
+
+            chatBox.appendChild(createMessage(userInput.value, true));
+            
+            const response = getResponse(userInput.value);
+            setTimeout(() => {
+                chatBox.appendChild(createMessage(response.text, false, response.options));
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 500);
+
+            userInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        window.onload = function() {
+            showMainMenu();
+        };
+    </script>
+</body>
+</html>

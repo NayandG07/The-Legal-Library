@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Legal Library Splash Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #031138, #1e40af);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.0rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+        }
+
+        .cta-button a {
+            text-decoration: none;
+            color: white;
+            background-color: linear-gradient(135deg, #031138, #1e40af);
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: 2px solid white;
+        }
+
+        .cta-button a:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            font-size: 3rem;
+            animation: hover 2s infinite;
+        }
+
+        @keyframes hover {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            ⚖
+        </div>
+        <h1>The Legal Library</h1>
+        <p>Comprehensive legal resources at your fingertips</p>
+        <!-- <button class="enter-btn" onclick="enterSite()">Enter</button> -->
+
+        <div class="cta-button">
+            <a href="/Index.html">Start Reading</a>
+        </div>
+    </div>
+    <script>
+        function enterSite() {
+            window.location.href = "/Index.html"; // Redirect to the main homepage
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE LEGAL LIBRARY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo i {
+      margin-right: 0.5rem;
+    }
+
+    .menu-button {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 3rem;
+  right: 1rem;
+  background-color: rgb(3, 25, 67);
+  color: rgb(255, 251, 251);
+  list-style: none;
+  padding: 1rem; /* Increased padding */
+  margin: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 200px; /* Increased width */
+}
+
+
+    .dropdown-menu.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .product-card {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 400px;
+      background-color: #ddd;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      color: #444;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .description {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 1rem;
+    }
+
+    .button {
+      background-color: #007bff;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    .related-resources {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .related-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .resource-item {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .like-share {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .like, .share {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .like {
+      color: red;
+    }
+
+    .share {
+      color: blue;
+    }
+
+    .like:hover, .share:hover {
+      transform: scale(1.2);
+    }
+
+    /* Chatbot Styles */
+  /* Existing styles... */
+
+  /* Chatbot Styles */
+  .chatbot-container {
+  position: fixed;
+  bottom: 80px; /* Adjusted from 20px to 80px */
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  display: none;
+  flex-direction: column;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+   #chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  }
+
+    .chatbot-header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+
+    .chatbot-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .chatbot-input button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    .chatbot-input button:hover {
+      background: #0056b3;
+    }
+
+    .chatbot-messages div {
+      margin: 5px 0;
+    }
+
+    /* 3D Animation Placeholder */
+    #character-animation {
+      position: absolute;
+      bottom: 10px;
+      right: 320px;
+      width: 80px;
+      height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><i class="fas fa-gavel"></i>THE LEGAL LIBRARY</div>
+    <button class="menu-button"><i class="fas fa-bars"></i></button>
+    <ul class="dropdown-menu">
+      <li>Home</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </header>
+  <div class="product-card">
+    <div class="product-title">Introduction to CONSTITUTIONAL LAW</div>
+    <div class="image-placeholder">
+      <img src="https://example.com/path/to/Fundamental-Rights.webp" alt="Fundamental Rights" style="width: 100%; height: 100%; border-radius: 10px;">
+      <div class="like-share">
+        <div class="like"><i class="fas fa-heart"></i></div>
+        <div class="share"><i class="fas fa-share-alt"></i></div>
+      </div>
+    </div>
+    <div class="price">Price: ₹49</div>
+    <div class="description">
+      This book provides an in-depth introduction to the fundamentals of legal studies. 
+      Perfect for beginners and aspiring lawyers, it covers essential topics in a concise and accessible manner.
+    </div>
+    <div class="buttons">
+      <button class="button">Read for Free</button>
+      <button class="button">Buy Now</button>
+    </div>
+    <div class="related-resources">
+      <div class="related-title">Related Resources</div>
+      <div class="resource-item">-Indian penal code</div>
+      <div class="resource-item">- property law</div>
+      <div class="resource-item">- Hindu law</div>
+    </div>
+  </div>
+
+  <!-- Chatbot(asif.. modify it and implement a 3d character) -->
+  <button id="chat-toggle" class="button" style="position: fixed; bottom: 20px; right: 20px;">Chat</button>
+  <div class="chatbot-container" id="chat-container">
+    <div class="chatbot-header">Chat with Us</div>
+    <div class="chatbot-messages" id="chat-messages"></div>
+    <div class="chatbot-input">
+      <input type="text" id="chat-input" placeholder="Type your message here...">
+      <button id="chat-send">Send</button>
+    </div>
+  </div>
+
+ 
+
+  <script>
+    document.querySelector('.menu-button').addEventListener('click', function() {
+      document.querySelector('.dropdown-menu').classList.toggle('show');
+    });
+
+    const messages = document.getElementById('chat-messages');
+    const input = document.getElementById('chat-input');
+    const sendButton = document.getElementById('chat-send');
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatContainer = document.getElementById('chat-container');
+
+    chatToggle.addEventListener('click', () => {
+      if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+        chatContainer.style.display = 'flex';
+      } else {
+        chatContainer.style.display = 'none';
+      }
+    });
+
+    sendButton.addEventListener('click', () => {
+      const userMessage = input.value.trim();
+      if (userMessage) {
+        const userDiv = document.createElement('div');
+        userDiv.textContent = 'You: ' + userMessage;
+        messages.appendChild(userDiv);
+        input.value = '';
+
+        // Simulate a chatbot response
+        setTimeout(() => {
+          const botDiv = document.createElement('div');
+          botDiv.textContent = 'Bot: Thank you for your message!';
+          messages.appendChild(botDiv);
+          messages.scrollTop = messages.scrollHeight;
+        }, 500);
+      }
+    });
+
+    // Basic 3D Animation Placeholder
+    const canvas = document.getElementById('character-animation');
+    const ctx = canvas.getContext('2d');
+    let frame = 0;
+
+    function drawCharacter() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw a simple 3D cube
+      const size = 30;
+      const offset = Math.sin(frame / 20) * 10;
+
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(25, 25 + offset, size, size);
+
+      ctx.strokeStyle = 'black';
+      ctx.strokeRect(25, 25 + offset, size, size);
+
+      frame++;
+      requestAnimationFrame(drawCharacter);
+    }
+
+    drawCharacter();
+  </script>
+</body>
+</html>

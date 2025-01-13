@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signup.css">
+    <script defer src="signup.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container right-panel-active">
+        <!-- Sign Up -->
+        <div class="container__form container--signup">
+            <form action="#" class="form" id="form1">
+                <h2 class="form__title">Sign Up</h2>
+                <!-- Added id for better selector targeting -->
+                <input type="text" id="username" placeholder="User" class="input" />
+                <input type="email" id="email-signup" placeholder="Email" class="input" />
+                <input type="password" id="password-signup" placeholder="Password" class="input" />
+                <!-- Added type="submit" to ensure the form submits correctly -->
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+        </div>
+    
+        <!-- Sign In -->
+        <div class="container__form container--signin">
+            <form action="#" class="form" id="form2">
+                <h2 class="form__title">Sign In</h2>
+                <!-- Added id for better selector targeting -->
+                <input type="email" id="email-signin" placeholder="Email" class="input" />
+                <input type="password" id="password-signin" placeholder="Password" class="input" />
+                <a href="#" class="link">Forgot your password?</a>
+                <!-- Added type="submit" to ensure the form submits correctly -->
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+        </div>
+    
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay">
+                <div class="overlay__panel overlay--left">
+                    <button class="btn" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay__panel overlay--right">
+                    <button class="btn" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

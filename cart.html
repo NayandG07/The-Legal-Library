@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Legalm Library</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', Arial, sans-serif;
+            background-color: #121212;
+            color: #dcdcdc;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1f1f2e;
+            color: #fff;
+            padding: 1rem 2rem;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.7rem 2.5rem 0.7rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            background-color: #2a2a40;
+            color: #dcdcdc;
+        }
+
+        .search-bar input::placeholder {
+            color: #888;
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .admin-button {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .admin-button:hover {
+            background: #1f7aa8;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .book-card {
+            background: #1f1f2e;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .book-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .book-card h3 {
+            font-size: 1.2rem;
+            color: #dcdcdc;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-card p {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .book-card .price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .book-card button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .book-card button:hover {
+            background: #1f7aa8;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: #1f1f2e;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            gap: 0.25rem;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: #dcdcdc;
+        }
+
+        .nav-item.active {
+            color: #3498db;
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">THE LEGAL LIBRARY</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search books, authors, or categories...">
+            <i>🔍</i>
+        </div>
+        <button class="admin-button">
+            🧑‍💼 Me
+        </button>
+    </header>
+
+    <main>
+        <!-- Add to Cart Section -->
+        <section class="section">
+            <div class="section-title">Add to Cart Books</div>
+            <div class="book-grid">
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>The Midnight Library</h3>
+                    <p>Matt Haig</p>
+                    <div class="price">$15.99</div>
+                    <button>Remove</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>Project Hail Mary</h3>
+                    <p>Andy Weir</p>
+                    <div class="price">$18.50</div>
+                    <button>Remove</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>Dune</h3>
+                    <p>Frank Herbert</p>
+                    <div class="price">$25.00</div>
+                    <button>Remove</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Liked Books Section -->
+        <section class="section">
+            <div class="section-title">Liked Books</div>
+            <div class="book-grid">
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>Atomic Habits</h3>
+                    <p>James Clear</p>
+                    <button>Read</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>1984</h3>
+                    <p>George Orwell</p>
+                    <button>Read</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/200x300" alt="Book Cover">
+                    <h3>The Great Gatsby</h3>
+                    <p>F. Scott Fitzgerald</p>
+                    <button>Read</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span>Library</span>
+        </a>
+        <a href="#" class="nav-item active" id="cartIcon">
+            <span class="nav-icon">🛒</span>
+            <span>Cart</span>
+        </a>
+    </nav>
+
+    <script>
+        // Highlight cart icon on click
+        document.getElementById("cartIcon").addEventListener("click", function () {
+            document.querySelectorAll(".nav-item").forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        });
+    </script>
+</body>
+</html>
