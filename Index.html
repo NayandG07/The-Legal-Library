@@ -382,11 +382,16 @@
     </script>
     
     <script>
+        // Define the backend URL dynamically based on the environment
+        const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+            ? 'http://localhost:5500' // Local development server
+            : 'https://e-book-server-95pk.onrender.com'; // Production server
+
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('authToken');
             if (!token) return;
     
-            fetch('https://e-book-server-95pk.onrender.com/isAdmin', {
+            fetch(`${BACKEND_URL}/isAdmin`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
                 .then((res) => res.json())

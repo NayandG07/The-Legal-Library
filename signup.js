@@ -59,7 +59,7 @@ secondForm.addEventListener("submit", async (e) => {
     const password = secondForm.querySelector('input[placeholder="Password"]').value;
 
     try {
-        const response = await fetch(`${BACKEND_URL}/signup`, {
+        const response = await fetch(`${BACKEND_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
