@@ -15,6 +15,11 @@ signUpBtn.addEventListener("click", () => {
     container.classList.add("right-panel-active");
 });
 
+// Define the backend URL dynamically based on the environment
+const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+    ? 'http://localhost:5500' // Local development server
+    : 'https://e-book-server-95pk.onrender.com'; // Production server
+
 // Handle Sign Up Form Submission
 firstForm.addEventListener("submit", async (e) => { // Fixed typo: used "firstForm" instead of "fistForm"
     e.preventDefault();
@@ -27,7 +32,7 @@ firstForm.addEventListener("submit", async (e) => { // Fixed typo: used "firstFo
     console.log(`Attempting to sign up with username: ${username}, email: ${email}`);
 
     try {
-        const response = await fetch('https://e-book-server-95pk.onrender.com/signup', {
+        const response = await fetch(`${BACKEND_URL}/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password }),
@@ -54,7 +59,7 @@ secondForm.addEventListener("submit", async (e) => {
     const password = secondForm.querySelector('input[placeholder="Password"]').value;
 
     try {
-        const response = await fetch('https://e-book-server-95pk.onrender.com/login', {
+        const response = await fetch(`${BACKEND_URL}/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),

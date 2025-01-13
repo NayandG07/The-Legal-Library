@@ -411,8 +411,11 @@
   </div>
 
   <script>
+    // Define the backend URL
+    const BACKEND_URL = 'https://e-book-server-95pk.onrender.com';
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Add click handlers for navigation
+      // Navigation click handlers
       document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', (e) => {
           document.querySelector('.nav-item.active').classList.remove('active');
@@ -420,48 +423,39 @@
         });
       });
 
-      // Add form submission handler
+      // Form submission handler
       const form = document.querySelector('form');
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         alert('Book added successfully!');
         form.reset();
       });
-      //
 
-      // Check if user is an admin
+      // Admin authentication check
       const token = localStorage.getItem('authToken');
       if (!token) {
-          alert('Unauthorized access.');
-          window.location.href = '/signup.html';
-          return;
+        alert('Unauthorized access.');
+        window.location.href = '/signup.html';
+        return;
       }
-      // fetch('/admin', { headers: { Authorization: `Bearer ${token}` } })
-      //     .then(res => {
-      //         if (res.status !== 200) {
-      //             alert('Admin access only.');
-      //           window.location.href = '';
-      //         }
-      //     });
-      fetch('http://localhost:5500/admin', { 
-          headers: { 
-              Authorization: `Bearer ${token}` 
-          }
+
+      // Fetch admin status from backend
+      fetch(`${BACKEND_URL}/admin`, { 
+        headers: { 
+          Authorization: `Bearer ${token}` 
+        }
       })
-          .then(res => {
-              if (res.status !== 200) {
-                  alert('Admin access only.');
-                  window.location.href = '/';
-              }
-          })
-          .catch(err => {
-              console.error('Error fetching admin page:', err);
-              alert('An error occurred. Please try again later.');
-          })
+        .then(res => {
+          if (res.status !== 200) {
+            alert('Admin access only.');
+            window.location.href = '/';
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching admin page:', err);
+          alert('An error occurred. Please try again later.');
+        });
     });
   </script>
-  <script>
-    const BACKEND_URL = 'https://e-book-server-95pk.onrender.com';
-  </script>  
 </body>
 </html>
