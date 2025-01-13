@@ -300,7 +300,7 @@
     <main class="categories-grid" id="categoriesGrid"></main>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
+        <a href="Index.html" class="nav-item active">
             <span class="nav-icon">🏠</span>
             <span>Home</span>
         </a>
@@ -308,7 +308,7 @@
             <span class="nav-icon">📚</span>
             <span>Library</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="cart.html" class="nav-item">  <!-- Updated this line -->
             <span class="nav-icon">🛒</span>
             <span>Cart</span>
         </a>
@@ -373,6 +373,27 @@
                 menu.classList.toggle("active");
             });
 
+            //
+            // Update the cart menu item click handler
+            const cartMenuItem = Array.from(menuOptions.getElementsByClassName('menu-item'))
+                .find(item => item.textContent === 'Cart');
+            if (cartMenuItem) {
+                cartMenuItem.addEventListener('click', () => {
+                    window.location.href = 'cart.html';
+                });
+            }
+            //
+            // Add click handlers for navigation items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    document.querySelectorAll('.nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
             // Redirect Profile to Signup Page
             const profileMenu = menuOptions.querySelector('.menu-item:first-child'); // First menu item is Profile
             profileMenu.addEventListener('click', () => {
@@ -382,16 +403,16 @@
     </script>
     
     <script>
-        // Define the backend URL dynamically based on the environment
-        const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-            ? 'http://localhost:5500' // Local development server
-            : 'https://e-book-server-95pk.onrender.com'; // Production server
+        // // Define the backend URL dynamically based on the environment
+        // const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+        //     ? 'http://localhost:5500' // Local development server
+        //     : 'https://e-book-server-95pk.onrender.com'; // Production server
 
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('authToken');
             if (!token) return;
     
-            fetch(`${BACKEND_URL}/isAdmin`, {
+            fetch('/isAdmin', {
                 headers: { Authorization: `Bearer ${token}` },
             })
                 .then((res) => res.json())

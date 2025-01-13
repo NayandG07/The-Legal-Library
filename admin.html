@@ -352,7 +352,6 @@
                 <option>Criminal Law</option>
                 <option>Civil Law</option>
                 <option>International Law</option>
-                <option>Constitutional Law</option>
               </select>
             </div>
             
@@ -411,13 +410,8 @@
   </div>
 
   <script>
-    // Define the backend URL dynamically based on the environment
-    const BACKEND_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-        ? 'http://localhost:5500' // Local development server
-        : 'https://e-book-server-95pk.onrender.com'; // Production server
-
     document.addEventListener('DOMContentLoaded', () => {
-      // Navigation click handlers
+      // Add click handlers for navigation
       document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', (e) => {
           document.querySelector('.nav-item.active').classList.remove('active');
@@ -425,38 +419,44 @@
         });
       });
 
-      // Form submission handler
+      // Add form submission handler
       const form = document.querySelector('form');
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         alert('Book added successfully!');
         form.reset();
       });
+      //
 
-      // Admin authentication check
+      // Check if user is an admin
       const token = localStorage.getItem('authToken');
       if (!token) {
-        alert('Unauthorized access.');
-        window.location.href = '/signup.html';
-        return;
+          alert('Unauthorized access.');
+          window.location.href = '/signup.html';
+          return;
       }
-
-      // Fetch admin status from backend
-      fetch(`${BACKEND_URL}/admin`, { 
-        headers: { 
-          Authorization: `Bearer ${token}` 
-        }
-      })
-        .then(res => {
-          if (res.status !== 200) {
-            alert('Admin access only.');
-            window.location.href = '/';
+      // fetch('/admin', { headers: { Authorization: `Bearer ${token}` } })
+      //     .then(res => {
+      //         if (res.status !== 200) {
+      //             alert('Admin access only.');
+      //           window.location.href = '';
+      //         }
+      //     });
+      fetch('http://localhost:5500/admin', { 
+          headers: { 
+              Authorization: `Bearer ${token}` 
           }
-        })
-        .catch(err => {
-          console.error('Error fetching admin page:', err);
-          alert('An error occurred. Please try again later.');
-        });
+      })
+          .then(res => {
+              if (res.status !== 200) {
+                  alert('Admin access only.');
+                  window.location.href = '/';
+              }
+          })
+          .catch(err => {
+              console.error('Error fetching admin page:', err);
+              alert('An error occurred. Please try again later.');
+          })
     });
   </script>
 </body>

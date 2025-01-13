@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Legal Resource E-book</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- <link rel="stylesheet" href="styles.css"> -->
   <style>
     body {
@@ -14,26 +15,68 @@
     }
 
     header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
 
-    .logo {
-      font-size: 1.5rem;
-      margin-left: auto;
-    }
+.logo {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-right: auto; /* Push logo to the left */
+}
 
+.logo i {
+  margin-right: 0.5rem;
+}
+
+.menu-button {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-left: auto; /* Push menu button to the right */
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Position below header */
+  right: 0; /* Align with right edge of header */
+  background-color: rgb(3, 25, 67);
+  color: rgb(255, 251, 251);
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 200px;
+  z-index: 1000; /* Ensure dropdown appears above other content */
+}
+
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
     .menu-button {
       font-size: 1.5rem;
       background: none;
       border: none;
       color: white;
       cursor: pointer;
-      margin-right: 10px;
+      margin-right: 1px;
     }
 
     .wishlist-button {
@@ -154,25 +197,7 @@
       margin: 0.5rem 0;
     }
 
-    #chatbot {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: #007bff;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      animation: float 3s infinite;
-    }
-
-    #chatbot img {
-      width: 50%;
-    }
+   
 
     .menu-content {
       position: absolute;
@@ -226,6 +251,77 @@
         transform: translateY(-10px);
       }
     }
+          /* Chatbot Button */
+          #chatbot-icon {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background:  #2196f3;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .chatbot-icon:hover {
+            background-color: #1976d2;
+        }
+
+        #chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Chatbot Container */
+        #chatbot-container {
+            position: fixed;
+            bottom: 110px; /* Positioned above the chatbot icon */
+            right: 50px;
+            width: 370px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+
+        #chatbot-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot Icon -->
+    <div id="chatbot-icon" onclick="toggleChatbot()">
+        <i class="fas fa-comments" style="font-size: 24px;"></i>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container">
+        <iframe src="chatbot.html" allow="microphone"></iframe>
+    </div>
+
+    <script>
+        function toggleChatbot() {
+            const chatbotContainer = document.getElementById('chatbot-container');
+            if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
+                chatbotContainer.style.display = 'block'; // Show chatbot
+            } else {
+                chatbotContainer.style.display = 'none'; // Hide chatbot
+            }
+        }
+    </script>
   </style>
 </head>
 <body>
@@ -233,12 +329,14 @@
     <div class="logo"><i class="fas fa-gavel"></i>THE LEGAL LIBRARY</div>
     <button class="menu-button"><i class="fas fa-bars"></i></button>
     <ul class="dropdown-menu">
-      <li>Home</li>
-      <li>About</li>
-      <li>Contact</li>
+      <li>Cart</li>
+      <li>Help</li>
+      <li>Wishlist</li>
+      <li>Terms & Conditions</li>
+      <li>Downloads</li>
+  
     </ul>
   </header>
-
   <main>
     <div class="product-card">
       <div class="image-placeholder">
@@ -287,10 +385,9 @@
       </section>
     </div>
   </main>
-  <div id="chatbot">
-    <img src="book-bot-icon.png" alt="Chatbot Icon">
-  </div>
-
+  <div id="chatbot-icon" onclick="toggleChatbot()">
+    📖
+</div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const priceElement = document.querySelector('.price');
@@ -326,6 +423,12 @@
       });
 
     });
+
   </script>
+  <script>
+    document.querySelector('.menu-button').addEventListener('click', function() {
+      document.querySelector('.dropdown-menu').classList.toggle('show');
+    });
+    </script>
 </body>
 </html>

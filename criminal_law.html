@@ -113,7 +113,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 0.60rem;
+            font-size: 0.75rem;
             text-align: center;
             padding: 0.5rem;
         }
@@ -258,7 +258,7 @@
 </head>
 <body>
     <header class="app-header">
-        <h1 style="font-size: 1.5rem; color: #2196f3;">Costitutional Law</h1>
+        <h1 style="font-size: 1.5rem; color: #2196f3;">Criminal Law</h1>
         <div class="hamburger-menu" id="hamburgerMenu">☰</div>
         <div class="menu-options" id="menuOptions">
             <div class="menu-item">Profile</div>
@@ -279,9 +279,9 @@
 
     <div class="book-list">
         <div class="book-card">
-            <div class="book-cover" style="background-color: #f44336;">Fundamental Right</div>
+            <div class="book-cover" style="background-color: #f44336;">Indian Penal Code</div>
             <div class="book-info">
-                <div class="book-title" id="fundamentalRight">Fundamental Right</div>
+                <div class="book-title">Indian Penal Code</div>
                 <div class="book-author">Goverment of India</div>
             </div>
             <div class="book-rating">
@@ -290,10 +290,33 @@
             </div>
         </div>
 
-     
+        <div class="book-card">
+            <div class="book-cover" style="background-color: #2196f3;">Criminal Procedure Code</div>
+            <div class="book-info">
+                <div class="book-title">Criminal Procedure Code</div>
+                <div class="book-author">Goverment of India</div>
+            </div>
+            <div class="book-rating">
+                <span class="star">★</span>
+                <span>4.5</span>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <div class="book-cover" style="background-color: #4caf50;">Evidence Act</div>
+            <div class="book-info">
+                <div class="book-title">Evidence Act</div>
+                <div class="book-author">Goverment of India</div>
+            </div>
+            <div class="book-rating">
+                <span class="star">★</span>
+                <span>4.7</span>
+            </div>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
-        <a href="Index.html" class="nav-item active">
+        <a href="#" class="nav-item active">
             <span class="nav-icon">🏠</span>
             <span>Home</span>
         </a>
@@ -301,7 +324,7 @@
             <span class="nav-icon">📚</span>
             <span>Library</span>
         </a>
-        <a href="cart.html" class="nav-item">
+        <a href="#" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span>Cart</span>
         </a>
@@ -317,24 +340,6 @@
             const menu = document.getElementById("menuOptions");
             document.getElementById("hamburgerMenu").addEventListener("click", () => {
                 menu.classList.toggle("active");
-            });
-            //
-
-            const bookTitle = document.getElementById("fundamentalRight");
-            bookTitle.addEventListener("click", () => {
-                window.location.href = "productdemo.html"; // Redirect to the product demo page
-            });
-            //
-            // Add click handlers for navigation items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // Remove active class from all items
-                    document.querySelectorAll('.nav-item').forEach(navItem => {
-                        navItem.classList.remove('active');
-                    });
-                    // Add active class to clicked item
-                    this.classList.add('active');
-                });
             });
         });
     </script>

@@ -222,22 +222,22 @@
             <div class="book-grid">
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>The Midnight Library</h3>
-                    <p>Matt Haig</p>
+                    <h3>Fundamental Right</h3>
+                    <p>Goverment of India</p>
                     <div class="price">$15.99</div>
                     <button>Remove</button>
                 </div>
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>Project Hail Mary</h3>
-                    <p>Andy Weir</p>
+                    <h3>Criminal Procedure Code</h3>
+                    <p>Goverment of India</p>
                     <div class="price">$18.50</div>
                     <button>Remove</button>
                 </div>
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>Dune</h3>
-                    <p>Frank Herbert</p>
+                    <h3>Contract Law</h3>
+                    <p>Goverment of India</p>
                     <div class="price">$25.00</div>
                     <button>Remove</button>
                 </div>
@@ -250,20 +250,20 @@
             <div class="book-grid">
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>Atomic Habits</h3>
-                    <p>James Clear</p>
+                    <h3>Indian Penal Code</h3>
+                    <p>Goverment of India</p>
                     <button>Read</button>
                 </div>
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>1984</h3>
-                    <p>George Orwell</p>
+                    <h3>Succession Law</h3>
+                    <p>Goverment of India</p>
                     <button>Read</button>
                 </div>
                 <div class="book-card">
                     <img src="https://via.placeholder.com/200x300" alt="Book Cover">
-                    <h3>The Great Gatsby</h3>
-                    <p>F. Scott Fitzgerald</p>
+                    <h3> Property Law</h3>
+                    <p>Goverment of India</p>
                     <button>Read</button>
                 </div>
             </div>
@@ -271,7 +271,7 @@
     </main>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-item">
+        <a href="Index.html" class="nav-item">
             <span class="nav-icon">🏠</span>
             <span>Home</span>
         </a>
@@ -279,7 +279,7 @@
             <span class="nav-icon">📚</span>
             <span>Library</span>
         </a>
-        <a href="#" class="nav-item active" id="cartIcon">
+        <a href="cart.html" class="nav-item active" id="cartIcon">
             <span class="nav-icon">🛒</span>
             <span>Cart</span>
         </a>
@@ -290,6 +290,18 @@
         document.getElementById("cartIcon").addEventListener("click", function () {
             document.querySelectorAll(".nav-item").forEach((item) => item.classList.remove("active"));
             this.classList.add("active");
+        });
+        //
+        // Add click handlers for navigation items
+        document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    document.querySelectorAll('.nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
         });
     </script>
 </body>
