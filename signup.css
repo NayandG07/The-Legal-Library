@@ -22,7 +22,7 @@ Daniel*/
 body {
 	align-items: center;
 	background-color: var(--white);
-	background: url("img.jpg");
+	background: url("https://raw.githubusercontent.com/NayandG07/E-Book-Resources/refs/heads/main/img.jpg");
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -106,7 +106,7 @@ body {
 
 .overlay {
 	background-color: var(--lightblue);
-	background: url("img.jpg");
+	background: url("https://raw.githubusercontent.com/NayandG07/E-Book-Resources/refs/heads/main/img.jpg");
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
