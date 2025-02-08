@@ -1,51 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="signup.css">
-    <script defer src="signup.js"></script>
-    <title>Document</title>
+    <title>Sign Up / Sign In</title>
+    
+    <!-- Import Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBixbCX6bC5vb59HuxLlLFY-ngyOSdo30w",
+            authDomain: "the-legal-library.firebaseapp.com",
+            projectId: "the-legal-library",
+            storageBucket: "the-legal-library.firebasestorage.app",
+            messagingSenderId: "30321248866",
+            appId: "1:30321248866:web:cb24a34294d30785e2df3b",
+            measurementId: "G-03BGZTYLLV"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get Firebase services
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Enable Firestore offline persistence
+        db.enablePersistence()
+            .catch((err) => {
+                if (err.code == 'failed-precondition') {
+                    console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                } else if (err.code == 'unimplemented') {
+                    console.log('The current browser doesn\'t support persistence.');
+                }
+            });
+    </script>
+
+    <style>
+        :root {
+            --white: #ffffff;
+            --gray: #333;
+            --blue: #0367a6;
+            --lightblue: #008997;
+            --button-radius: 0.7rem;
+            --max-width: min(758px, 90vw);
+            --max-height: min(420px, 80vh);
+            font-size: clamp(14px, 2vw, 16px);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+
+        body {
+            align-items: center;
+            background-color: var(--white);
+            background: url("https://raw.githubusercontent.com/NayandG07/E-Book-Resources/refs/heads/main/img.jpg");
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: grid;
+            height: 100vh;
+            justify-content: center;
+            margin: 0;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: var(--);
+            border-radius: var(--button-radius);
+            box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25);
+            max-width: var(--max-width);
+            width: 80%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .form-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(1000px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .input {
+            width: 90%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background-color: transparent;
+            /* Fully transparent background */
+            border: 1.9px solid rgb(0, 0, 0);
+            /* Light white border for visibility */
+            color: rgb(255, 255, 255);
+            /* White text for contrast */
+            border-radius: 5px;
+            /* Smooth rounded edges */
+            outline: none;
+            /* Remove default focus outline */
+        }
+
+        .input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+            /* Light placeholder text for readability */
+        }
+
+        .btn {
+            background-color: var(--blue);
+            color: var(--white);
+            border: none;
+            padding: 0.9rem 2rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .switch {
+            margin-top: 1rem;
+            cursor: pointer;
+            color: var(--white);
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container right-panel-active">
-        <!-- Sign Up -->
-        <div class="container__form container--signup">
-            <form action="#" class="form" id="form1">
-                <h2 class="form__title">Sign Up</h2>
-                <!-- Added id for better selector targeting -->
-                <input type="text" id="username" placeholder="User" class="input" />
-                <input type="email" id="email-signup" placeholder="Email" class="input" />
-                <input type="password" id="password-signup" placeholder="Password" class="input" />
-                <!-- Added type="submit" to ensure the form submits correctly -->
-                <button type="submit" class="btn">Sign Up</button>
-            </form>
-        </div>
-    
-        <!-- Sign In -->
-        <div class="container__form container--signin">
-            <form action="#" class="form" id="form2">
-                <h2 class="form__title">Sign In</h2>
-                <!-- Added id for better selector targeting -->
-                <input type="email" id="email-signin" placeholder="Email" class="input" />
-                <input type="password" id="password-signin" placeholder="Password" class="input" />
-                <a href="#" class="link">Forgot your password?</a>
-                <!-- Added type="submit" to ensure the form submits correctly -->
-                <button type="submit" class="btn">Sign In</button>
-            </form>
-        </div>
-    
-        <!-- Overlay -->
-        <div class="container__overlay">
-            <div class="overlay">
-                <div class="overlay__panel overlay--left">
-                    <button class="btn" id="signIn">Sign In</button>
-                </div>
-                <div class="overlay__panel overlay--right">
-                    <button class="btn" id="signUp">Sign Up</button>
-                </div>
+    <div class="container">
+        <div class="form-container">
+            <div id="signup-form" class="form">
+                <h2>Sign Up</h2>
+                <form id="signupForm">
+                    <input type="text" placeholder="User" class="input" id="signup-username" required />
+                    <input type="email" placeholder="Email" class="input" id="signup-email" required />
+                    <input type="password" placeholder="Password" class="input" id="signup-password" required />
+                    <button type="submit" class="btn">Sign Up</button>
+                </form>
+                <p class="switch" id="switchToSignIn">Already have an account? Sign In</p>
+            </div>
+
+            <div id="signin-form" class="form hidden">
+                <h2>Sign In</h2>
+                <form id="signinForm">
+                    <input type="email" placeholder="Email" class="input" id="signin-email" required />
+                    <input type="password" placeholder="Password" class="input" id="signin-password" required />
+                    <button type="submit" class="btn">Sign In</button>
+                </form>
+                <p class="switch" id="switchToSignUp">Don't have an account? Sign Up</p>
             </div>
         </div>
     </div>
+
+    <script>
+        // Get DOM elements
+        const signupForm = document.getElementById("signup-form");
+        const signinForm = document.getElementById("signin-form");
+        const switchToSignIn = document.getElementById("switchToSignIn");
+        const switchToSignUp = document.getElementById("switchToSignUp");
+
+        // Toggle functions
+        switchToSignIn.addEventListener("click", () => {
+            signupForm.classList.add("hidden");
+            signinForm.classList.remove("hidden");
+        });
+
+        switchToSignUp.addEventListener("click", () => {
+            signinForm.classList.add("hidden");
+            signupForm.classList.remove("hidden");
+        });
+    </script>
+
+    <!-- Authentication script -->
+    <script>
+        // Enhanced sign-in handler with better error handling
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+
+            try {
+                // First, sign in with Firebase Auth
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                console.log('Auth successful, checking user role...');
+
+                // Then, get the user's Firestore document
+                const userDocRef = db.collection('users').doc(userCredential.user.uid);
+                const userDoc = await userDocRef.get();
+
+                if (!userDoc.exists) {
+                    console.error('No user document found');
+                    throw new Error('User document not found');
+                }
+
+                const userData = userDoc.data();
+                console.log('User data:', userData);
+
+                if (userData.role === 'admin') {
+                    console.log('Admin user detected, redirecting to admin panel...');
+                    window.location.href = '/admin.html';
+                } else {
+                    console.log('Regular user detected, redirecting to home...');
+                    window.location.href = '/Home.html';
+                }
+
+            } catch (error) {
+                console.error('Sign in error:', error);
+                if (error.code === 'auth/user-not-found') {
+                    alert('No user found with this email address');
+                } else if (error.code === 'auth/wrong-password') {
+                    alert('Incorrect password');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('Invalid email address');
+                } else if (error.message === 'User document not found') {
+                    // Create user document if it doesn't exist
+                    try {
+                        await db.collection('users').doc(auth.currentUser.uid).set({
+                            username: email.split('@')[0],
+                            email: email,
+                            role: email === 'nayandg8@gmail.com' ? 'admin' : 'user',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        window.location.reload(); // Retry after creating document
+                    } catch (docError) {
+                        console.error('Error creating user document:', docError);
+                        alert('Error creating user profile');
+                    }
+                } else {
+                    alert(`Sign in failed: ${error.message}`);
+                }
+            }
+        });
+
+        // Enhanced sign-up handler
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const username = document.getElementById('signup-username').value;
+
+            try {
+                // Create auth user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                console.log('Auth account created, creating user document...');
+
+                // Create user document
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    username,
+                    email,
+                    role: 'user',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                console.log('User document created successfully');
+                alert('Sign up successful!');
+                window.location.href = '/Home.html';
+            } catch (error) {
+                console.error('Sign up error:', error);
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('This email is already registered');
+                } else if (error.code === 'auth/weak-password') {
+                    alert('Password should be at least 6 characters');
+                } else {
+                    alert(`Sign up failed: ${error.message}`);
+                }
+            }
+        });
+
+        // Check authentication state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is signed in:', user.email);
+                console.log('User UID:', user.uid);
+            } else {
+                console.log('No user is signed in');
+            }
+        });
+    </script>
+
+    <!-- Add this button temporarily -->
+    <button onclick="createAdminUser()">Create Admin User</button>
+
+    <script>
+    async function createAdminUser() {
+        try {
+            // First sign in as admin
+            const userCredential = await auth.signInWithEmailAndPassword('nayandg8@gmail.com', 'admin123');
+            
+            // Create admin document
+            await db.collection('users').doc(userCredential.user.uid).set({
+                username: 'Admin',
+                email: 'nayandg8@gmail.com',
+                role: 'admin',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            console.log('Admin user document created successfully');
+            alert('Admin user document created!');
+        } catch (error) {
+            console.error('Error creating admin:', error);
+            alert(error.message);
+        }
+    }
+    </script>
 </body>
+
 </html>
