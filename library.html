@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library - Legal Library</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0367a6;
+            --secondary: #008997;
+            --background: #f8f9fa;
+            --text: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            padding-bottom: 60px; /* Space for bottom nav */
+        }
+
+        /* Header Styles */
+        header {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 1rem;
+            top: 4rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            list-style: none;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+        }
+
+        .dropdown-menu li:hover {
+            background: #f0f0f0;
+        }
+
+        /* Library Container Styles */
+        .library-container {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 1rem;
+        }
+
+        .book-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .book-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f1c40f;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text);
+            gap: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Chatbot Icon */
+        #chatbot-icon {
+            position: fixed;
+            right: 2rem;
+            bottom: 5rem;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        #chatbot-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Add top navigation -->
+    <header>
+        <div class="logo"><i class="fas fa-gavel"></i>THE LEGAL LIBRARY</div>
+        <button class="menu-button" id="hamburgerMenu"><i class="fas fa-bars"></i></button>
+        <ul class="dropdown-menu" id="menuOptions">
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="library.html">Library</a></li>
+            <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </header>
+
+    <!-- Library content -->
+    <div class="library-container">
+        <!-- Books will be loaded here -->
+    </div>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav">
+        <a href="Home.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="library.html" class="nav-item active">
+            <span class="nav-icon">📚</span>
+            <span>Library</span>
+        </a>
+        <a href="cart.html" class="nav-item">
+            <span class="nav-icon">🛒</span>
+            <span>Cart</span>
+        </a>
+    </nav>
+
+    <!-- Chatbot -->
+    <div id="chatbot-icon" onclick="toggleChatbot()">
+        📖
+    </div>
+
+    <script type="module">
+        import { BookService } from './book-service.js';
+        import { insertNavigation } from './nav-component.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            insertNavigation();
+            
+            // Subscribe to real-time book updates
+            BookService.subscribeToBooks((books) => {
+                const libraryContainer = document.querySelector('.library-container');
+                libraryContainer.innerHTML = books.map(book => `
+                    <div class="book-card">
+                        <img src="${book.coverUrl}" alt="${book.title}" class="book-cover">
+                        <div class="book-info">
+                            <h3>${book.title}</h3>
+                            <p>${book.author}</p>
+                            <p>₹${book.price}</p>
+                            <div class="book-rating">
+                                <span class="star">★</span>
+                                <span>${book.averageRating?.toFixed(1) || '4.0'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Add click event to book cards
+                document.querySelectorAll('.book-card').forEach((card, index) => {
+                    card.addEventListener('click', () => {
+                        const book = books[index];
+                        window.location.href = `displaypage.html?id=${book.id}`;
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

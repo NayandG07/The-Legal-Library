@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors'); // Added CORS middleware
 const path = require('path'); // Added path module
 const app = express();
-const PORT = 5500;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -181,7 +181,17 @@ db.serialize(() => {
     });
 });
 
+// Serve main page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Handle all routes to support client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Legal Library - Admin Dashboard</title>
+  <title>Admin Dashboard - Legal Library</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --primary: #2563eb;
-      --secondary: #64748b;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --sidebar-width: 250px;
+      --primary: #0367a6;
+      --secondary: #008997;
+      --background: #f8f9fa;
+      --text: #333;
     }
 
     * {
@@ -21,443 +21,350 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #f8fafc;
-      color: #1e293b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--background);
     }
 
     .dashboard {
-      display: flex;
+      display: grid;
+      grid-template-columns: 250px 1fr;
       min-height: 100vh;
     }
 
+    /* Sidebar Styles */
     .sidebar {
-      width: var(--sidebar-width);
       background: white;
-      border-right: 1px solid #e2e8f0;
       padding: 1.5rem;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
+      border-right: 1px solid #eee;
     }
 
-    .logo-container {
+    .sidebar-header {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid #e2e8f0;
       margin-bottom: 2rem;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-    }
-
-    .brand-name {
-      font-weight: 600;
-      font-size: 1.25rem;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      color: var(--primary);
     }
 
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      color: var(--secondary);
-      text-decoration: none;
-      transition: all 0.2s;
+      padding: 0.8rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
     .nav-item:hover {
-      background-color: #f1f5f9;
-      color: var(--primary);
+      background: #f0f0f0;
     }
 
     .nav-item.active {
-      background-color: #eff6ff;
-      color: var(--primary);
-      font-weight: 500;
+      background: var(--primary);
+      color: white;
     }
 
+    /* Main Content Styles */
     .main-content {
-      flex: 1;
-      margin-left: var(--sidebar-width);
       padding: 2rem;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .content-header {
       margin-bottom: 2rem;
     }
 
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    /* Book Form Styles */
+    .book-form {
       background: white;
-      border: 1px solid #e2e8f0;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      width: 300px;
-    }
-
-    .search-input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 0.875rem;
-    }
-
-    .user-menu {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .stat-title {
-      color: var(--secondary);
-      font-size: 0.875rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-value {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-change {
-      font-size: 0.875rem;
-      color: var(--success);
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: white;
-      border-radius: 0.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .form-group {
       margin-bottom: 1.5rem;
     }
 
-    .form-label {
+    .form-group label {
       display: block;
       margin-bottom: 0.5rem;
-      font-weight: 500;
-      font-size: 0.875rem;
+      color: var(--text);
     }
 
-    .form-control {
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
     }
 
     .btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
       background: var(--primary);
       color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: opacity 0.3s;
     }
 
-    .btn-primary:hover {
-      background: #1d4ed8;
+    .btn:hover {
+      opacity: 0.9;
     }
 
-    .recent-uploads {
-      margin-top: 1rem;
+    /* Book List Styles */
+    .book-list {
+      margin-top: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .upload-item {
-      display: flex;
-      align-items: center;
+    .book-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
       padding: 1rem;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .upload-item:last-child {
-      border-bottom: none;
-    }
-
-    .upload-icon {
-      width: 40px;
-      height: 40px;
-      background: #eff6ff;
-      border-radius: 0.5rem;
-      display: flex;
+      border-bottom: 1px solid #eee;
       align-items: center;
-      justify-content: center;
-      margin-right: 1rem;
     }
 
-    .upload-details {
-      flex: 1;
+    .book-cover {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
     }
 
-    .upload-title {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
+    .book-actions {
+      display: flex;
+      gap: 0.5rem;
     }
 
-    .upload-meta {
-      font-size: 0.875rem;
-      color: var(--secondary);
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
     }
 
-    @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-        z-index: 1000;
-      }
-      
-      .main-content {
-        margin-left: 0;
-      }
-      
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
+    .loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .error-message {
+        color: #ff0000;
+        margin: 10px 0;
+    }
+
+    .success-message {
+        color: #00aa00;
+        margin: 10px 0;
     }
   </style>
 </head>
 <body>
   <div class="dashboard">
-    <aside class="sidebar">
-      <div class="logo-container">
-        <span class="logo">📚</span>
-        <span class="brand-name">The Legal Library</span>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-gavel fa-2x"></i>
+        <h2>Legal Library</h2>
       </div>
-      
-      <nav class="nav-links">
-        <a href="#" class="nav-item active">📊 Dashboard</a>
-        <a href="#" class="nav-item">📚 Books</a>
-        <a href="#" class="nav-item">🏷️ Categories</a>
-        <a href="#" class="nav-item">👥 Users</a>
-        <a href="#" class="nav-item">💰 Sales</a>
-        <a href="#" class="nav-item">⚙️ Settings</a>
+      <nav>
+        <div class="nav-item active">
+          <i class="fas fa-book"></i> Manage Books
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-users"></i> Users
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-chart-bar"></i> Analytics
+        </div>
+        <div class="nav-item" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </div>
       </nav>
-    </aside>
+    </div>
 
-    <main class="main-content">
-      <header class="header">
-        <div class="search-bar">
-          <span>🔍</span>
-          <input type="text" class="search-input" placeholder="Search for books, users...">
-        </div>
-        
-        <div class="user-menu">
-          <span>🔔</span>
-          <span>👤 Admin</span>
-        </div>
-      </header>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-title">Total Books</div>
-          <div class="stat-value">1,234</div>
-          <div class="stat-change">↑ 12% this month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">Active Users</div>
-          <div class="stat-value">5,678</div>
-          <div class="stat-change">↑ 8% this month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">Total Sales</div>
-          <div class="stat-value">$12,345</div>
-          <div class="stat-change">↑ 15% this month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">New Downloads</div>
-          <div class="stat-value">890</div>
-          <div class="stat-change">↑ 5% this month</div>
-        </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="content-header">
+        <h1>Manage Books</h1>
       </div>
 
-      <div class="content-grid">
-        <div class="card">
-          <div class="card-header">
-            <h2>Add New Book</h2>
+      <!-- Add Book Form -->
+      <div class="book-form">
+        <h2>Add New Book</h2>
+        <form id="addBookForm">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" required>
           </div>
-          
-          <form>
-            <div class="form-group">
-              <label class="form-label">Book Title</label>
-              <input type="text" class="form-control" placeholder="Enter book title">
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Author</label>
-              <input type="text" class="form-control" placeholder="Enter author name">
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Category</label>
-              <select class="form-control">
-                <option>Corporate Law</option>
-                <option>Criminal Law</option>
-                <option>Civil Law</option>
-                <option>International Law</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Price</label>
-              <input type="number" class="form-control" placeholder="Enter price">
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Description</label>
-              <textarea class="form-control" rows="4" placeholder="Enter book description"></textarea>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Upload Book File</label>
-              <input type="file" class="form-control">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Add Book</button>
-          </form>
-        </div>
+          <div class="form-group">
+            <label>Author</label>
+            <input type="text" name="author" required>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category" required>
+              <option value="constitutional">Constitutional Law</option>
+              <option value="criminal">Criminal Law</option>
+              <option value="civil">Civil Law</option>
+              <option value="corporate">Corporate Law</option>
+              <option value="tax">Tax Law</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" name="price" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Cover Image</label>
+            <input type="file" name="cover" accept="image/*" required>
+          </div>
+          <div class="form-group">
+            <label>PDF File</label>
+            <input type="file" name="pdf" accept="application/pdf" required>
+          </div>
+          <button type="submit" class="btn">Add Book</button>
+        </form>
+      </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h2>Recent Uploads</h2>
-          </div>
-          
-          <div class="recent-uploads">
-            <div class="upload-item">
-              <div class="upload-icon">📘</div>
-              <div class="upload-details">
-                <div class="upload-title">Corporate Law Basics</div>
-                <div class="upload-meta">Added 2 hours ago</div>
-              </div>
-            </div>
-            
-            <div class="upload-item">
-              <div class="upload-icon">📗</div>
-              <div class="upload-details">
-                <div class="upload-title">IP Law Guide 2025</div>
-                <div class="upload-meta">Added 5 hours ago</div>
-              </div>
-            </div>
-            
-            <div class="upload-item">
-              <div class="upload-icon">📕</div>
-              <div class="upload-details">
-                <div class="upload-title">Criminal Law Studies</div>
-                <div class="upload-meta">Added 1 day ago</div>
-              </div>
-            </div>
-          </div>
+      <!-- Book List -->
+      <div class="book-list">
+        <h2>Existing Books</h2>
+        <div id="booksList">
+          <!-- Books will be loaded here dynamically -->
         </div>
       </div>
-    </main>
+    </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add click handlers for navigation
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-          document.querySelector('.nav-item.active').classList.remove('active');
-          e.target.classList.add('active');
-        });
-      });
+  <script type="module">
+    import { auth } from './firebase-init.js';
+    import { BookService } from './book-service.js';
+    import { AuthService } from './auth-service.js';
 
-      // Add form submission handler
-      const form = document.querySelector('form');
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Book added successfully!');
-        form.reset();
-      });
-      //
-
-      // Check if user is an admin
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-          alert('Unauthorized access.');
-          window.location.href = '/signup.html';
-          return;
+    // Check admin status on load
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = auth.currentUser;
+      if (!user || !(await AuthService.isAdmin(user.uid))) {
+        window.location.href = '/Home.html';
+        return;
       }
-      // fetch('/admin', { headers: { Authorization: `Bearer ${token}` } })
-      //     .then(res => {
-      //         if (res.status !== 200) {
-      //             alert('Admin access only.');
-      //           window.location.href = '';
-      //         }
-      //     });
-      fetch('http://localhost:5500/admin', { 
-          headers: { 
-              Authorization: `Bearer ${token}` 
-          }
-      })
-          .then(res => {
-              if (res.status !== 200) {
-                  alert('Admin access only.');
-                  window.location.href = '/';
-              }
-          })
-          .catch(err => {
-              console.error('Error fetching admin page:', err);
-              alert('An error occurred. Please try again later.');
-          })
+
+      // Load existing books
+      loadBooks();
+
+      // Handle book form submission
+      document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        try {
+            const formData = new FormData(e.target);
+            
+            // Add loading state
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding Book...';
+
+            // Validate files
+            const coverImage = formData.get('cover');
+            const pdfFile = formData.get('pdf');
+            
+            if (!coverImage || !pdfFile) {
+                throw new Error('Please select both cover image and PDF file');
+            }
+
+            const bookData = {
+                title: formData.get('title'),
+                author: formData.get('author'),
+                category: formData.get('category'),
+                price: parseFloat(formData.get('price')),
+                description: formData.get('description'),
+                averageRating: 0,
+                totalRatings: 0
+            };
+
+            console.log('Uploading book with data:', bookData); // Debug log
+
+            await BookService.addBook(bookData, coverImage, pdfFile);
+            alert('Book added successfully!');
+            e.target.reset();
+            loadBooks(); // Refresh the book list
+        } catch (error) {
+            console.error('Error adding book:', error); // Debug log
+            alert(`Error adding book: ${error.message}`);
+        } finally {
+            // Reset button state
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Add Book';
+        }
+      });
+
+      // Handle logout
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        try {
+          await AuthService.logout();
+          window.location.href = '/Home.html';
+        } catch (error) {
+          alert(error.message);
+        }
+      });
     });
+
+    // Function to load and display books
+    async function loadBooks() {
+      try {
+        const books = await BookService.getAllBooks();
+        const booksListElement = document.getElementById('booksList');
+        
+        booksListElement.innerHTML = books.map(book => `
+          <div class="book-item">
+            <img src="${book.coverUrl}" alt="${book.title}" class="book-cover">
+            <div class="book-info">
+              <h3>${book.title}</h3>
+              <p>${book.author}</p>
+              <p>₹${book.price}</p>
+            </div>
+            <div class="book-actions">
+              <button class="btn" onclick="editBook('${book.id}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn" onclick="deleteBook('${book.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading books:', error);
+      }
+    }
+
+    // Make functions available globally
+    window.editBook = async (bookId) => {
+      // Implement edit functionality
+    };
+
+    window.deleteBook = async (bookId) => {
+      if (confirm('Are you sure you want to delete this book?')) {
+        try {
+          await BookService.deleteBook(bookId);
+          loadBooks(); // Refresh the list
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+    };
   </script>
 </body>
 </html>
