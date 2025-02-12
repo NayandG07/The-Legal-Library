@@ -1,8 +1,7 @@
-import { db, storage } from './firebase-init.js';
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 import { 
-    collection,
     doc,
-    addDoc,
     updateDoc,
     deleteDoc,
     getDocs,
@@ -11,16 +10,14 @@ import {
     getDoc,
     onSnapshot
 } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-import { 
-    ref,
-    uploadBytes,
-    getDownloadURL 
-} from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js';
 
-export const BookService = {
+export class BookService {
     // Add new book
-    async addBook(bookData, coverImage, pdfFile) {
+    static async addBook(bookData, coverImage, pdfFile) {
         try {
+            const storage = getStorage();
+            const db = getFirestore();
+
             if (!coverImage || !pdfFile) {
                 throw new Error('Both cover image and PDF file are required');
             }
@@ -35,9 +32,9 @@ export const BookService = {
             }
 
             console.log('Uploading cover image...'); // Debug log
-            const imageRef = ref(storage, `covers/${Date.now()}_${coverImage.name}`);
-            await uploadBytes(imageRef, coverImage);
-            const imageUrl = await getDownloadURL(imageRef);
+            const coverRef = ref(storage, `covers/${Date.now()}_${coverImage.name}`);
+            await uploadBytes(coverRef, coverImage);
+            const coverUrl = await getDownloadURL(coverRef);
 
             console.log('Uploading PDF file...'); // Debug log
             const pdfRef = ref(storage, `pdfs/${Date.now()}_${pdfFile.name}`);
@@ -47,18 +44,18 @@ export const BookService = {
             console.log('Adding to Firestore...'); // Debug log
             const bookRef = await addDoc(collection(db, 'books'), {
                 ...bookData,
-                coverUrl: imageUrl,
-                pdfUrl: pdfUrl,
+                coverUrl,
+                pdfUrl,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             });
 
             return bookRef.id;
         } catch (error) {
-            console.error('Add book error:', error);
-            throw new Error(`Failed to add book: ${error.message}`);
+            console.error('Error in addBook:', error);
+            throw error;
         }
-    },
+    }
 
     // Get books by category
     async getBooksByCategory(category) {
@@ -74,7 +71,7 @@ export const BookService = {
             console.error('Get books error:', error);
             throw error;
         }
-    },
+    }
 
     // Update book
     async updateBook(bookId, updateData) {
@@ -87,7 +84,7 @@ export const BookService = {
             console.error('Update book error:', error);
             throw error;
         }
-    },
+    }
 
     // Delete book
     async deleteBook(bookId) {
@@ -97,7 +94,7 @@ export const BookService = {
             console.error('Delete book error:', error);
             throw error;
         }
-    },
+    }
 
     async addReview(bookId, userId, rating, comment) {
         try {
@@ -127,7 +124,7 @@ export const BookService = {
             console.error('Add review error:', error);
             throw error;
         }
-    },
+    }
 
     async getAllBooks() {
         try {
@@ -140,7 +137,7 @@ export const BookService = {
             console.error('Get all books error:', error);
             throw error;
         }
-    },
+    }
 
     subscribeToBooks(callback) {
         return onSnapshot(collection(db, 'books'), (snapshot) => {
@@ -151,4 +148,4 @@ export const BookService = {
             callback(books);
         });
     }
-}; 
+} 

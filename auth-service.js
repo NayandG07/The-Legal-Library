@@ -1,31 +1,23 @@
-import { 
-    auth,
-    db 
-} from './firebase-config';
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { 
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
     sendPasswordResetEmail,
     sendEmailVerification,
     signInWithPopup,
     GoogleAuthProvider
 } from 'firebase/auth';
-import { 
-    doc, 
-    setDoc,
-    getDoc 
-} from 'firebase/firestore';
 
 // User authentication service
-export const AuthService = {
+export class AuthService {
     // Register new user
-    async register(email, password, username) {
+    static async register(email, password, username) {
         try {
+            const auth = getAuth();
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             
             // Create user profile in Firestore
+            const db = getFirestore();
             await setDoc(doc(db, 'users', userCredential.user.uid), {
                 username,
                 email,
@@ -38,10 +30,11 @@ export const AuthService = {
             console.error('Registration error:', error);
             throw error;
         }
-    },
+    }
 
     // Login existing user
-    async login(email, password) {
+    static async login(email, password) {
+        const auth = getAuth();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             return userCredential.user;
@@ -49,51 +42,56 @@ export const AuthService = {
             console.error('Login error:', error);
             throw error;
         }
-    },
+    }
 
     // Logout user
-    async logout() {
+    static async logout() {
+        const auth = getAuth();
         try {
             await signOut(auth);
         } catch (error) {
             console.error('Logout error:', error);
             throw error;
         }
-    },
+    }
 
     // Check if user is admin
-    async isAdmin(uid) {
+    static async isAdmin(uid) {
+        const db = getFirestore();
         try {
             const userDoc = await getDoc(doc(db, 'users', uid));
-            return userDoc.data()?.role === 'admin';
+            return userDoc.exists() && userDoc.data().role === 'admin';
         } catch (error) {
             console.error('Admin check error:', error);
             return false;
         }
-    },
+    }
 
     // Password reset functionality
-    async resetPassword(email) {
+    static async resetPassword(email) {
+        const auth = getAuth();
         try {
             await sendPasswordResetEmail(auth, email);
         } catch (error) {
             console.error('Password reset error:', error);
             throw error;
         }
-    },
+    }
 
     // Email verification
-    async sendEmailVerification(user) {
+    static async sendEmailVerification(user) {
+        const auth = getAuth();
         try {
             await sendEmailVerification(user);
         } catch (error) {
             console.error('Email verification error:', error);
             throw error;
         }
-    },
+    }
 
     // Google Sign-in
-    async signInWithGoogle() {
+    static async signInWithGoogle() {
+        const auth = getAuth();
         const provider = new GoogleAuthProvider();
         try {
             return await signInWithPopup(auth, provider);
@@ -102,4 +100,4 @@ export const AuthService = {
             throw error;
         }
     }
-}; 
+} 
